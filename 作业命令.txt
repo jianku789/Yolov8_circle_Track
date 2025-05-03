@@ -1,0 +1,14 @@
+python train.py --weights weights/yolov8n.pt --data 'data/circle.yaml' --hyp 'data/hyps/obb/hyp.finetune_dota.yaml' --cfg models/yaml/yolov8s_small_object.yaml   --epochs 300   --batch-size 16   --img 640   --device 0
+
+python train.py --weights runs/train/exp48/weights/best.pt --data 'data/circle.yaml' --hyp 'data/hyps/obb/hyp.finetune_dota.yaml' --cfg models/yaml/yolov8n_small_object.yaml   --epochs 100  --batch-size 8   --img 640   --device 0
+
+
+python eval_rotate_PR_V8.py 
+
+python detect.py --weights  runs/train/exp48/weights/best.pt  --save-txt --source  detectimage/changjing  --img 640 --device 0 --conf-thres 0.81 --iou-thres 0.25 
+
+python detect_save_xml.py --save-xml --xml_save_path_dir xml_save/04-12/3  --weights  runs/train/exp/weights/best.pt   --source detectimage/04-12/3   --img 640 --device 0 --conf-thres 0.70 --iou-thres 0.25
+
+python export.py --weights  runs/train/exp17/weights/best.pt  --batch 1
+
+python track_predict.py --video_path trackdata/res3.mp4  --video_fps 15 --weights runs/train/exp32/weights/best.pt --output /home/jianku/code/Yolov8_obb_Prune_Track-main/test_video/output/output3.mp4 --is_track_img
